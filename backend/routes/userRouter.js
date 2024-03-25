@@ -31,6 +31,10 @@ const updateSchema = z.object({
     password : z.string().min(8).optional()
 })
 
+const addSchema = z.object({
+    productname : z.string(),
+    productprice : z.number()
+})
 userRouter.post("/signup",async (req,res)=>{
      const body = req.body;
      const {success} = signupSchema.safeParse(body);
@@ -125,8 +129,33 @@ userRouter.put("/update",authMiddleware, async (req,res)=>{
       }
 })
 
-userRouter.get("/",(req,res)=>{
+userRouter.get("/add",authMiddleware,async (req,res)=>{
+     const userId = req.userId;
+     const {success} = addSchema.safeParse(req.body);
+     if(!success)
+     {
+        return res.status(411).json({
+            message : "wrong input on addition"
+        })
+     }
      
+     try{
+     const cart = await Cart.findOne({ userId : userId});
+     cart.products.push(req.body);
+     await cart.save().then(()=>{
+        return res.status(200).json({
+            message : "product added successfully"
+        })
+     })
+
+     }
+     catch(e)
+     {
+        return res.status(411).json({
+            message : "some error occurred"
+        })
+     }
+
 })
 
 userRouter.use("/account",accountRouter);
