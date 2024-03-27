@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 const { Schema } = require('mongoose');
 
-await mongoose.connect("url");
+// await mongoose.connect("url");
 
 const userSchema = new Schema({
     username : {
@@ -22,6 +22,8 @@ const userSchema = new Schema({
         required : true
     }
 });
+
+const User = mongoose.model('User',userSchema);
 
 const cartSchema = new Schema({
     userId : {
@@ -43,12 +45,12 @@ const transationsSchema = new Schema({
     }]
 })
 
-const User = mongoose.model('User',userSchema);
+
 const Cart = mongoose.model('Cart',cartSchema);
 const Transactions = mongoose.model('Transactions',transationsSchema);
 
-module.exports({
+module.exports ={
     User,
     Cart,
     Transactions
-})
+}

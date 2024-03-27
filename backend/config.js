@@ -1,3 +1,3 @@
 
 const JWT_SECRET = "EcommerceAppByNikhil";
-export default JWT_SECRET;
+module.exports = {JWT_SECRET, }
